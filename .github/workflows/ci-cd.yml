@@ -2,10 +2,10 @@ name: Flask CI/CD
 
 on:
   push:
-    branches: [ main ]  # or master, if your branch is master
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,3 +25,10 @@ jobs:
       - name: Run tests
         run: |
           pytest
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: <your-app-name>  # 👈 REPLACE this with your Azure App name
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
